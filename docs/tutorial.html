@@ -42,7 +42,26 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hello-world">Hello World</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-concepts">Basic Concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-patch">Creating a Patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#placing-objects">Placing Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connecting-objects">Connecting Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#saving-patches">Saving Patches</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-inlets-and-outlets">Working with Inlets and Outlets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-building-a-simple-synth">Example: Building a Simple Synth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-random-patch-generation">Example: Random Patch Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loading-existing-patches">Loading Existing Patches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="topics/topics.html">Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="API/API.html">API</a></li>
@@ -75,7 +94,206 @@
              
   <section id="tutorial">
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading">¶</a></h1>
-<p>write tutorial here…</p>
+<p>This tutorial will guide you through creating MaxMSP patches with MaxPyLang.</p>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h2>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h3>
+<p>First, install MaxPyLang:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Barnard-PL-Labs/MaxPyLang.git
+<span class="nb">cd</span><span class="w"> </span>MaxPyLang
+pip3<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="hello-world">
+<h3>Hello World<a class="headerlink" href="#hello-world" title="Link to this heading">¶</a></h3>
+<p>Let’s create a simple oscillator patch that generates a 440 Hz tone:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">maxpylang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+
+<span class="c1"># Create a new patch</span>
+<span class="n">patch</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MaxPatch</span><span class="p">()</span>
+
+<span class="c1"># Place objects</span>
+<span class="n">osc</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;cycle~ 440&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dac</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;ezdac~&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Connect them</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">([</span><span class="n">osc</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dac</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="c1"># Save the patch</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;hello_world.maxpat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run this script, then open <code class="docutils literal notranslate"><span class="pre">hello_world.maxpat</span></code> in MaxMSP. Click the DAC (ezdac~) to hear the tone!</p>
+</section>
+</section>
+<section id="basic-concepts">
+<h2>Basic Concepts<a class="headerlink" href="#basic-concepts" title="Link to this heading">¶</a></h2>
+<section id="creating-a-patch">
+<h3>Creating a Patch<a class="headerlink" href="#creating-a-patch" title="Link to this heading">¶</a></h3>
+<p>Every MaxPyLang script starts by creating a MaxPatch object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">maxpylang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+<span class="n">patch</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MaxPatch</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="placing-objects">
+<h3>Placing Objects<a class="headerlink" href="#placing-objects" title="Link to this heading">¶</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">patch.place()</span></code> to add objects to your patch. The method returns a list of created objects:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Place a single object</span>
+<span class="n">metro</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;metro 500&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Place multiple objects</span>
+<span class="n">oscs</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;cycle~ 220&quot;</span><span class="p">,</span> <span class="s2">&quot;cycle~ 330&quot;</span><span class="p">,</span> <span class="s2">&quot;cycle~ 440&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also specify placement options:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grid placement with custom spacing</span>
+<span class="n">objects</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span>
+    <span class="s2">&quot;cycle~ 100&quot;</span><span class="p">,</span> <span class="s2">&quot;cycle~ 200&quot;</span><span class="p">,</span> <span class="s2">&quot;cycle~ 300&quot;</span><span class="p">,</span>
+    <span class="n">spacing_type</span><span class="o">=</span><span class="s2">&quot;grid&quot;</span><span class="p">,</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">80</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Vertical placement</span>
+<span class="n">objects</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span>
+    <span class="s2">&quot;random 100&quot;</span><span class="p">,</span> <span class="s2">&quot;random 200&quot;</span><span class="p">,</span> <span class="s2">&quot;random 300&quot;</span><span class="p">,</span>
+    <span class="n">spacing_type</span><span class="o">=</span><span class="s2">&quot;vertical&quot;</span><span class="p">,</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="mi">50</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="connecting-objects">
+<h3>Connecting Objects<a class="headerlink" href="#connecting-objects" title="Link to this heading">¶</a></h3>
+<p>Connect objects using their inlets and outlets:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Connect outlet 0 of obj1 to inlet 0 of obj2</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">([</span><span class="n">obj1</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">obj2</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="c1"># Connect multiple patchcords at once</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">obj1</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">obj2</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="p">[</span><span class="n">obj1</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">obj3</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="p">[</span><span class="n">obj2</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">obj4</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="saving-patches">
+<h3>Saving Patches<a class="headerlink" href="#saving-patches" title="Link to this heading">¶</a></h3>
+<p>Save your patch to a .maxpat file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">patch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;my_patch.maxpat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="working-with-inlets-and-outlets">
+<h2>Working with Inlets and Outlets<a class="headerlink" href="#working-with-inlets-and-outlets" title="Link to this heading">¶</a></h2>
+<p>Every MaxObject has <code class="docutils literal notranslate"><span class="pre">ins</span></code> (inlets) and <code class="docutils literal notranslate"><span class="pre">outs</span></code> (outlets) that you can access by index:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">osc</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;cycle~ 440&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dac</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;ezdac~&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Access outlets and inlets by index</span>
+<span class="n">outlet</span> <span class="o">=</span> <span class="n">osc</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>     <span class="c1"># First outlet of osc</span>
+<span class="n">inlet</span> <span class="o">=</span> <span class="n">dac</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>       <span class="c1"># First inlet of dac</span>
+
+<span class="c1"># Connect them</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">([</span><span class="n">outlet</span><span class="p">,</span> <span class="n">inlet</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="example-building-a-simple-synth">
+<h2>Example: Building a Simple Synth<a class="headerlink" href="#example-building-a-simple-synth" title="Link to this heading">¶</a></h2>
+<p>Let’s create a more complex patch with multiple oscillators:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">maxpylang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+
+<span class="n">patch</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MaxPatch</span><span class="p">()</span>
+
+<span class="c1"># Create oscillators at different frequencies</span>
+<span class="n">frequencies</span> <span class="o">=</span> <span class="p">[</span><span class="mi">220</span><span class="p">,</span> <span class="mi">330</span><span class="p">,</span> <span class="mi">440</span><span class="p">,</span> <span class="mi">550</span><span class="p">]</span>
+<span class="n">oscillators</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">frequencies</span><span class="p">:</span>
+    <span class="n">osc</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cycle~ </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">oscillators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">osc</span><span class="p">)</span>
+
+<span class="c1"># Create a mixer</span>
+<span class="n">mixer</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;*~ 0.25&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Scale volume to avoid clipping</span>
+<span class="n">dac</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;ezdac~&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Connect all oscillators to mixer</span>
+<span class="k">for</span> <span class="n">osc</span> <span class="ow">in</span> <span class="n">oscillators</span><span class="p">:</span>
+    <span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">([</span><span class="n">osc</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mixer</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="c1"># Connect mixer to speakers</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">([</span><span class="n">mixer</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dac</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="n">patch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;multi_oscillator.maxpat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-random-patch-generation">
+<h2>Example: Random Patch Generation<a class="headerlink" href="#example-random-patch-generation" title="Link to this heading">¶</a></h2>
+<p>MaxPyLang makes it easy to generate patches programmatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">maxpylang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="n">patch</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MaxPatch</span><span class="p">()</span>
+
+<span class="c1"># Generate random number generators</span>
+<span class="n">num_generators</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">generators</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_generators</span><span class="p">):</span>
+    <span class="n">max_val</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;random </span><span class="si">{</span><span class="n">max_val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">generators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+
+<span class="c1"># Create outputs</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_generators</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+<span class="c1"># Connect generators to outputs</span>
+<span class="k">for</span> <span class="n">gen</span><span class="p">,</span> <span class="n">out</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">generators</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+    <span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">([</span><span class="n">gen</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">out</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="c1"># Add a metro to trigger them all</span>
+<span class="n">metro</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;metro 1000&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="n">generators</span><span class="p">:</span>
+    <span class="n">patch</span><span class="o">.</span><span class="n">connect</span><span class="p">([</span><span class="n">metro</span><span class="o">.</span><span class="n">outs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gen</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="n">patch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;random_generators.maxpat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-existing-patches">
+<h2>Loading Existing Patches<a class="headerlink" href="#loading-existing-patches" title="Link to this heading">¶</a></h2>
+<p>You can load and modify existing MaxMSP patches:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">maxpylang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+
+<span class="c1"># Load an existing patch</span>
+<span class="n">patch</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MaxPatch</span><span class="p">(</span><span class="s2">&quot;existing_patch.maxpat&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add new objects</span>
+<span class="n">new_obj</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">&quot;print&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Save modified patch</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;modified_patch.maxpat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Explore the <a class="reference internal" href="API/API.html"><span class="doc">API</span></a> for complete reference documentation</p></li>
+<li><p>Check out <a class="reference internal" href="topics/topics.html"><span class="doc">Topics</span></a> for advanced features</p></li>
+<li><p>See the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory for more complex patches</p></li>
+<li><p>Learn about <a class="reference internal" href="topics/unknown_objs.html"><span class="doc">Unknown Objects</span></a> and <a class="reference internal" href="topics/linked_files.html"><span class="doc">Linked Files</span></a></p></li>
+</ul>
+</section>
 </section>
 
 

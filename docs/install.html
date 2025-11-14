@@ -41,7 +41,22 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-source">Installation from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-installation">Development Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#verifying-installation">Verifying Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#import-error">Import Error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependency-issues">Dependency Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-version">Python Version</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="topics/topics.html">Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
@@ -75,7 +90,79 @@
              
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
-<p>…coming soon…</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Python 3.8 or higher</p></li>
+<li><p>MaxMSP (for opening and running the generated patches)</p></li>
+</ul>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h3>
+<p>MaxPyLang requires the following Python packages:</p>
+<ul class="simple">
+<li><p>numpy &gt;= 1.22.0</p></li>
+<li><p>sphinx_rtd_theme</p></li>
+<li><p>tabulate</p></li>
+</ul>
+<p>These will be automatically installed when you install MaxPyLang.</p>
+</section>
+</section>
+<section id="installation-from-source">
+<h2>Installation from Source<a class="headerlink" href="#installation-from-source" title="Link to this heading">¶</a></h2>
+<p>The recommended way to install MaxPyLang is from the GitHub repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Barnard-PL-Labs/MaxPy-Lang.git
+<span class="nb">cd</span><span class="w"> </span>MaxPy-Lang
+pip3<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="development-installation">
+<h2>Development Installation<a class="headerlink" href="#development-installation" title="Link to this heading">¶</a></h2>
+<p>If you want to modify the source code and see changes immediately, install in editable mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Barnard-PL-Labs/MaxPy-Lang.git
+<span class="nb">cd</span><span class="w"> </span>MaxPy-Lang
+pip3<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+<p>This creates a link to your source directory, so any changes you make are immediately available without reinstalling.</p>
+</section>
+<section id="verifying-installation">
+<h2>Verifying Installation<a class="headerlink" href="#verifying-installation" title="Link to this heading">¶</a></h2>
+<p>To verify MaxPyLang is installed correctly, run the hello world example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/hello_world
+python3<span class="w"> </span>main.py
+</pre></div>
+</div>
+<p>This should create a file called <code class="docutils literal notranslate"><span class="pre">hello_world.maxpat</span></code> in the current directory. Open this file in MaxMSP to verify it works correctly.</p>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">¶</a></h2>
+<section id="import-error">
+<h3>Import Error<a class="headerlink" href="#import-error" title="Link to this heading">¶</a></h3>
+<p>If you get <code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'maxpylang'</span></code>, make sure:</p>
+<ol class="arabic simple">
+<li><p>You installed the package successfully</p></li>
+<li><p>You’re using the correct Python environment (check with <code class="docutils literal notranslate"><span class="pre">which</span> <span class="pre">python3</span></code>)</p></li>
+<li><p>If using a virtual environment, ensure it’s activated</p></li>
+</ol>
+</section>
+<section id="dependency-issues">
+<h3>Dependency Issues<a class="headerlink" href="#dependency-issues" title="Link to this heading">¶</a></h3>
+<p>If you have issues with numpy or other dependencies, try upgrading pip first:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+pip3<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="python-version">
+<h3>Python Version<a class="headerlink" href="#python-version" title="Link to this heading">¶</a></h3>
+<p>MaxPyLang requires Python 3.8 or higher. Check your version:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>If you need to install a newer Python version, visit <a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></p>
+</section>
+</section>
 </section>
 
 

@@ -20,5 +20,6 @@ help:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 deploy: html
+	rm -rf API _sources _static topics *.html *.js objects.inv searchindex.js genindex.html search.html
 	mv html/* .
 	rm -rf html

@@ -21,7 +21,7 @@ pip3 install .
 ## Quick Start
 
 See this example in [examples/hello_world](./examples/hello_world).
-To run this, `python3 examples/hello_world/hello_world.py` will create a Max patch file `hello_world.maxpat` that contains a simple audio oscillator connected to the DAC.
+To run this, `python3 examples/hello_world/main.py` will create a Max patch file `hello_world.maxpat` that contains a simple audio oscillator connected to the DAC.
 You can then open this patch in MaxMSP and click the DAC to hear a 440 Hz tone.
 
 ```python

@@ -7,7 +7,20 @@ from .tools import misc
 
 
 class MaxObject():
+    """
+    This class represents a Max object within a Max patch.
 
+    To create a *cycle~* object with a frequency of 440 Hz, you would use the in-box text: ``"cycle~ 440"``. \
+    
+    You can also include attributes in the in-box text by using the '@' symbol followed by the attribute name and value. \
+    For example, to create a *jit.movie* object that loads the file *crashtest.mov*, you would use the in-box text: \
+    ``"jit.movie @moviefile crashtest.mov"``.
+    TODO: this seems to not work for UI objects maybe. \
+
+    Objects have inlets and outlets, which are accessible via the ``.ins`` and ``.outs`` properties, respectively. \
+    You can access individual inlets and outlets by indexing into these lists. For example, to access the first outlet of an object \
+    named *myobj*, you would use ``myobj.outs[0]``.
+    """
     #class variables
     arg_warning = True                              #flag to give argument warnings; can be turned off by user
     known_objs = misc.get_objs()                    #objs that have been templated

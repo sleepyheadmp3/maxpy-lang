@@ -5,7 +5,7 @@ Installation
 Requirements
 ============
 
-- Python 3.7 or higher
+- Python 3.8 or higher
 - MaxMSP (for opening and running the generated patches)
 
 Dependencies
@@ -80,7 +80,7 @@ If you have issues with numpy or other dependencies, try upgrading pip first:
 Python Version
 --------------
 
-MaxPyLang requires Python 3.7 or higher. Check your version:
+MaxPyLang requires Python 3.8 or higher. Check your version:
 
 .. code-block:: bash
 

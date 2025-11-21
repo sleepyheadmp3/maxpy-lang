@@ -27,8 +27,9 @@ dependencies = [
 Homepage = "http://pypi.python.org/pypi/MaxPyLang/"
 
 [tool.setuptools]
-packages = ["maxpylang"]
+include-package-data = true
 
-[tool.setuptools.package-data]
-maxpylang = ["data/**/*"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["maxpylang*"]
 
